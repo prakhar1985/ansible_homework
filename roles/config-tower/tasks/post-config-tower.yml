@@ -1,0 +1,60 @@
+- name: Create Homework Assignment project 
+  command: |
+    tower-cli project create --organization="{{org_name}}" --scm-type=git --scm-branch="{{scm_branch}}" --scm-url="{{ scm_url }}" --scm-update-on-launch=True -n "{{ proj_name }}"
+
+- name: Download Credential file 
+  copy:
+    src: workstation_creds.json
+    dest: /root/workstation_creds.json
+
+- name: Create credential to connect to workstation
+  command: |
+    tower-cli credential create --name "{{ssh_cred_name}}" --organization "{{org_name}}" --credential-type Machine --inputs=@/root/workstation_creds.json
+
+- name: Delete credential file
+  file:
+    path: /root/workstation_creds.json
+    state: absent
+
+- name: Create Inventory
+  command: |
+    tower-cli inventory create -n "{{static_inventory_name}}" --organization "{{org_name}}"
+
+- name: Create Group in static inventory 
+  command: |
+    tower-cli group create --inventory "{{static_inventory_name}}"  --name {{group_name}}
+
+- name: Add workstation host in tower_inventory 
+  command: |
+    tower-cli host create --inventory "{{static_inventory_name}}" --name "{{host_name}}"
+
+- name: Associate workstation host to group 
+  command: | 
+    tower-cli host associate --host "{{host_name}}" --group "{{group_name}}"
+
+
+- name: Tower Creds key file
+  tower_credential:
+    name: "{{ sso_cred_name }}"
+    organization: Default
+    state: present
+    kind: ssh
+    tower_host: tower1.{{tower_GUID}}.example.opentlc.com
+    tower_username: admin
+    tower_password: r3dh4t1!
+    ssh_key_data: /root/secret.pem
+    username: "{{ sso_login }}"
+
+- name: Remove secret
+  file:
+    name: /root/secret.pem
+    state: absent
+
+- name: Create AWS ready only Credentials
+  shell: tower-cli credential create --credential-type 'Amazon Web Services' -u admin -p r3dh4t1! -h https://tower1.{{tower_GUID}}.example.opentlc.com --name "{{aws_read_keys}}"  --organization "{{org_name}}" --inputs @/root/read_only.json
+    
+- name: Delete Read_only credentials
+  file:
+    name: /root/read_only.json
+    state: absent
+
