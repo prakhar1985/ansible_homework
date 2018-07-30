@@ -34,7 +34,7 @@
 
 - name: Tower Creds key file
   tower_credential:
-    name: "{{ sso_cred_name }}"
+    name: "{{ opentlc_cred_name }}"
     organization: Default
     state: present
     kind: ssh
@@ -42,7 +42,7 @@
     tower_username: admin
     tower_password: r3dh4t1!
     ssh_key_data: /root/.ssh/mykey.pem
-    username: "{{ sso_login }}"
+    username: "{{ opentlc_login }}"
 
 - name: Remove secret
   file:

@@ -8,9 +8,9 @@
     src: tower_info.yml
     dest: /tmp/tower_info.yml
 
-- name: Copy sso ssh keys
+- name: Copy opentlc ssh keys
   copy:
-    src: "{{path_to_sso_key}}"
+    src: "{{path_to_opentlc_key}}"
     dest: /root/secret.pem
 
 
