@@ -33,3 +33,8 @@
             username: admin
           identity_api_version: '3.0'
           region_name: RegionOne
+- name: Set openstack.pub authorized key from file
+  authorized_key:
+    user: cloud-user
+    state: present
+    key: "{{ lookup('file', '/root/.ssh/openstack.pub') }}"
