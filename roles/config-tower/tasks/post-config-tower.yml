@@ -1,19 +1,8 @@
 - name: Create Homework Assignment project 
-  command: |
-    tower-cli project create --organization="{{org_name}}" --scm-type=git --scm-branch="{{scm_branch}}" --scm-url="{{ scm_url }}" --scm-update-on-launch=True -n "{{ proj_name }}"
 
 
 - name: Machine Credentail to connect to workstation using openstack.pub
   tower_credential:
-    name: Connect_to_workstation
-    organization: Default
-    state: present
-    kind: ssh
-    tower_host: tower1.{{tower_GUID}}.example.opentlc.com
-    tower_username: admin
-    tower_password: r3dh4t1!
-    ssh_key_data: "/root/.ssh/openstack.pem"
-    username: cloud-user
 
 - name: Create Inventory
   command: |
