@@ -1,7 +1,0 @@
-- name: Generate var file for order_svc.sh script
-
-- name: Generate var file for tower module
-
-- name: Copy opentlc ssh keys
-
-- name: Copy inventory vars
