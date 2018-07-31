@@ -20,6 +20,7 @@
 
 
 .List of Playbooks
+[%header,cols=2*]
 |===
 | Files or dir | Purpose
 | app-tier | Install application server role
