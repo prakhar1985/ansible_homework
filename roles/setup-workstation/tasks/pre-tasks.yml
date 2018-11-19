@@ -1,24 +1,26 @@
 - name: Setup Yum repos 
   shell: scp ctrl.example.com:/etc/yum.repos.d/open.repo /etc/yum.repos.d/open.repo
+- name: yum clean
+  shell: yum clean all
 - name: Install EPEL repos 
   yum:
      name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
      state: present 
-- name: Install required packages 
-  yum: 
-     name: "{{item}}"
-     state: latest 
-  loop: 
-    - python 
-    - python-pip 
-    - python-devel 
-    - gcc 
-    - ansible 
-    - python-openstackclient
-- name: Install shade library
+- name: disable selinux
+  command: setenforce 0
+- name: install pip
+  command: easy_install "pip==9.0.3"
+- name: Install openstacksdk library
   pip:
-    name: shade 
+    name: openstacksdk
     state: latest
+- name: Downgrade python
+  yum:
+   name:
+    - python-2.7.5-48.el7.x86_64
+    - python-libs-2.7.5-48.el7.x86_64
+   state: present
+   allow_downgrade: yes
 - name: Create clouds.yaml file
   blockinfile:
     create: yes

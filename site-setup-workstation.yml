@@ -4,10 +4,12 @@
   tasks:
   - name: Create workstation inventory
     add_host:
-       name: "workstation-{{osp_GUID}}.rhpds.opentlc.com"
+       name: "workstation-{{OSP_GUID}}.rhpds.opentlc.com"
        group: workstation
 
 - hosts: workstation
   become: yes
   roles:
     - setup-workstation
+
+- import_playbook: site-install-isolated-node.yml 
