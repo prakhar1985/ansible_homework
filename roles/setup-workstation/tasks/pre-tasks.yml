@@ -4,23 +4,17 @@
   shell: yum clean all
 - name: Install EPEL repos 
   yum:
-     name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-     state: present 
-- name: disable selinux
-  command: setenforce 0
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present 
 - name: install pip
-  command: easy_install "pip==9.0.3"
+  yum:
+    name:
+      - python-pip
+      - gcc
 - name: Install openstacksdk library
   pip:
     name: openstacksdk
     state: latest
-- name: Downgrade python
-  yum:
-   name:
-    - python-2.7.5-48.el7.x86_64
-    - python-libs-2.7.5-48.el7.x86_64
-   state: present
-   allow_downgrade: yes
 - name: Create clouds.yaml file
   blockinfile:
     create: yes
